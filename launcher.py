@@ -118,7 +118,21 @@ def launch_game():
 
 # --- INTERFACE GRAPHIQUE ---
 app = ctk.CTk()
-app.geometry("800x450")
+
+# Dimensions de la fenêtre de ton launcher
+window_width = 800
+window_height = 450
+
+# Récupération de la taille de l'écran du joueur
+screen_width = app.winfo_screenwidth()
+screen_height = app.winfo_screenheight()
+
+# Calcul des coordonnées exactes pour le centre
+x = int((screen_width / 2) - (window_width / 2))
+y = int((screen_height / 2) - (window_height / 2))
+
+# Application de la taille et de la position (+x+y)
+app.geometry(f"{window_width}x{window_height}+{x}+{y}")
 app.title("Arzéri Launcher")
 
 try:
