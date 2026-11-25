@@ -15,7 +15,6 @@ def resource_path(relative_path):
 
 # --- GÉNÉRATION DES TEXTURES FUSIONNÉES AVEC LE FOND ---
 def creer_texture_cadre(largeur, hauteur, couleur_accent, bg_crop=None, survol=False, texte=""):
-    # Si on a le morceau d'arrière-plan, on s'en sert comme base (zéro carré noir !)
     if bg_crop is not None:
         base = bg_crop.convert("RGBA").resize((largeur, hauteur), Image.Resampling.LANCZOS)
     else:
@@ -49,7 +48,6 @@ def creer_texture_cadre(largeur, hauteur, couleur_accent, bg_crop=None, survol=F
         y_text = (hauteur - 3 - text_h) / 2 - 2
         draw.text((x_text, y_text), texte.upper(), font=font, fill=(240, 245, 255, 255))
         
-    # Fusion alpha du cadre semi-transparent sur l'extrait exact de background.png
     resultat = Image.alpha_composite(base, calque)
     return ctk.CTkImage(light_image=resultat, dark_image=resultat, size=(largeur, hauteur))
 
@@ -231,6 +229,7 @@ y = int((screen_height / 2) - (window_height / 2))
 
 app.geometry(f"{window_width}x{window_height}+{x}+{y}")
 app.title("Arzéri Launcher")
+app.resizable(False, False)  # Bloque le redimensionnement et le plein écran
 
 try:
     app.iconbitmap(resource_path("icon.ico"))
@@ -255,7 +254,6 @@ try:
     bg_label = ctk.CTkLabel(app, image=bg_image, text="")
     bg_label.place(x=0, y=0, relwidth=1, relheight=1)
     
-    # Découpage exact de l'arrière-plan sous le bouton et la barre
     btn_bg_crop = raw_bg.crop((btn_x, btn_y, btn_x + btn_w, btn_y + btn_h))
     prog_bg_crop = raw_bg.crop((prog_x, prog_y, prog_x + prog_w, prog_y + prog_h))
 except Exception:
